@@ -11,7 +11,11 @@ def fill_values(tests):
             fill_values(test['values'])
 
 
-def main(values_path, tests_path, report_path):
+def main(values_path, tests_path):
+    with open('tests.json', 'r') as f:
+        tests_data = json.load(f)
+    with open('report.json', 'w') as f:
+        json.dump(tests_data, f, indent=2)
     with open(tests_path, 'r') as f:
         tests_data = json.load(f)
 
@@ -22,21 +26,19 @@ def main(values_path, tests_path, report_path):
     values_dict = {item['id']: item['value'] for item in values_data['values']}
 
     fill_values(tests_data['tests'])
-
-    with open(report_path, 'w') as f:
+    with open('report.json', 'w') as f:
         json.dump(tests_data, f, indent=2)
 
 
 if __name__ == "__main__":
-    print('to use write in console: python task3.py path/to/tests.json path/to/values.json path/to/report.json')
+    print('to use write in console: python task3.py path/to/values.json path/to/tests.json')
     parser = argparse.ArgumentParser(description='Process some JSON files.')
     parser.add_argument('values_path', type=str)
     parser.add_argument('tests_path', type=str)
-    parser.add_argument('report_path', type=str)
 
     args = parser.parse_args()
 
-    main(args.values_path, args.tests_path, args.report_path)
+    main(args.values_path, args.tests_path)
 
 
 
